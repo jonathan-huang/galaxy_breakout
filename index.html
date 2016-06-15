@@ -1,0 +1,226 @@
+<!DOCTYPE html><html lang="en">
+	<head>
+		<title>Interactive games | extreme breakouts</title>
+		<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+		<link rel="stylesheet" href="stylesheet.css">
+		<link rel="icon" type="image/png" href="https://cdn3.iconfinder.com/data/icons/brain-games/1042/Board-Games.png">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+			<style>
+			
+			</style>
+	</head>
+	<body onload="load()">
+		<div class="title-container">
+			<h1>Galaxy Breakouts</h1>
+		</div>
+		<div id="progress" class="w3-round-xlarge">
+			<div id="pro" class="w3-round-xlarge"></div>
+		</div>
+		<main id="main">
+			<div class="hints">
+				
+			</div>
+			<div class="store">
+
+			</div>
+			<div id="level1">
+				<button id="playAndPauseOne" onclick="playLevelOne()">&#9658;</button>
+				<canvas id="canvasLevelOne" width="1050px" height="570px" style="border: 0.2cm ridge #AAA; padding: 2%;"></canvas>
+			</div>
+			<div class="level2">
+				<canvas id="canvasLevelTwo" width="1050px" height="570px" style="border: 0.2cm ridge #AAA; padding: 2%;"></canvas>
+			</div>
+		<script>
+var canvas = document.getElementById("canvasLevelOne");
+var ctx = canvas.getContext("2d");
+var gameOver_1 = false;
+var ballRadius = 10;
+var ballColor = "silver";
+var x = canvas.width/2;
+var y = canvas.height-30;
+var dx = 2;
+var dy = -2;
+var paddleHeight = 15;
+var paddleWidth = 150;
+var paddleX = (canvas.width-paddleWidth)/2;
+var rightPressed = false;
+var leftPressed = false;
+var brickWidth = 57;
+var brickHeight = 18.5;
+var brickPadding = 7;
+var brickOffsetTop = 35;
+var brickOffsetLeft = 30;
+var score = 0;
+var deaths = 4;
+var brickRow = 16;
+var brickColumn = 14;
+var bricks = [];
+
+var canvas_2 = document.getElementById("canvasLevelTwo");
+var ctx_2 = canvas_2.getContext("2d");
+var ballRadius_2 = 10;
+var ballColor_2 = "silver";
+var x_2 = canvas.width/2;
+var y_2 = canvas.height-30;
+var dx_2 = 2;
+var dy_2 = -2;
+var paddleHeight_2 = 15;
+var paddleWidth_2 = 150;
+var paddleX_2 = (canvas.width-paddleWidth)/2;
+var rightPressed_2 = false;
+var leftPressed_2 = false;
+var brickWidth_2 = 58;
+var brickHeight_2 = 18;
+var brickPadding_2 = 9;
+var brickOffsetTop_2 = 25;
+var brickOffsetLeft_2 = 30;
+var score_2 = 0;
+var death_2 = 4;
+var brickRow_2 = 16;
+var brickColumn_2 = 15;
+var bricks_2 = [];
+
+var drawLevelOne;
+var drawLevelTwo;
+var load = function() {
+	var elem = document.getElementById("pro"); var width = 1; var count = 0;
+	document.getElementById("main").style.display = "none";
+//creating bricks for each level
+	createBricks_levelOne();
+	createBricks_levelTwo();
+	var THIS = setInterval(function() {
+		if (count < 101) {
+			count += 1;
+			width++; 
+            elem.style.width = width + '%'; 
+		}else {
+			clearInterval(THIS);
+			document.getElementById("main").style.display = "block";
+			document.getElementById("progress").style.display = "none";
+			document.getElementById("pro").style.display = "none";
+			alert("Game successfully loaded!");
+		}
+	}, 20);
+}
+		/////////LEVEL 1////////////
+function playLevelOne() {
+	drawLevelOne = setInterval(drawlevelOne, 6);
+	document.getElementById("playAndPauseOne").style.display = "none";
+}
+function createBricks_levelOne() {
+	for(c=0; c<brickColumn; c++) {bricks[c] = [];for(r=0; r<brickRow; r++) {bricks[c][r] = { x: 0, y: 0, status: 1 };}}
+}
+document.addEventListener("keydown", keyDownHandler, false); 
+document.addEventListener("keyup", keyUpHandler, false);
+function keyDownHandler(e) {if(e.keyCode == 39) {rightPressed = true;} else if(e.keyCode == 37) {leftPressed = true;}}
+function keyUpHandler(e) {if(e.keyCode == 39) {rightPressed = false;} else if(e.keyCode == 37) {leftPressed = false;} }
+function collisionDetection_levelOne() {
+    for(c=0; c<brickColumn; c++) {
+        for(r=0; r<brickRow; r++) {
+            var b = bricks[c][r];
+            if(b.status == 1) {
+                if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
+                    dy = -dy;
+                    b.status = 0;
+                    score++;
+                    if(score == brickRow*brickColumn) { alert("YOU WON!"); clearInterval(drawLevelOne);}
+                }
+            }
+        }
+    }
+}
+function display_levelOne() {
+    var chance = Math.ceil(Math.random() * 600)
+	ctx.beginPath();
+	if (chance == 5) {
+		ctx.font = "italic bold 35px Arial";
+		ctx.fillStyle = "red";
+		ctx.fillText("WARNING!!", canvas.width/2 - 50, 30);
+		setTimeout(function() {x = canvas.width - x}, 2000);
+	}else {
+		ctx.font = "italic bold 35px Arial";
+		ctx.fillStyle = "cyan";
+		ctx.fillText("EASY MODE.", canvas.width/2 - 50, 30);
+	}
+    ctx.arc(x, y, ballRadius/2, 0, Math.PI*2);
+	ctx.fillStyle = ballColor;
+    ctx.fill();
+    ctx.closePath();
+    ctx.beginPath();
+    ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+    ctx.fillStyle = "#555";
+    ctx.fill();
+    ctx.closePath();
+	ctx.font = "22px Arial";
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText("Score: "+score, 8, 20);
+	ctx.fillText("Death: " + deaths, canvas.width-205, 20);
+	ctx.font = "italic bold 40px Arial";
+	ctx.fillStyle = "darkgreen";
+	ctx.fillText("LEVEL 1", canvas.width/6, 32);
+}
+function drawBricks_levelOne() {
+	var brickColour;
+    for(c=0; c<brickColumn; c++) {
+        for(r=0; r<brickRow; r++) {
+		    if (c >= 0 && c <= 2) {brickColour = "brown";}
+			else if (c >= 2 && c <= 5) {brickColour = "gold";}
+			else if (c >= 5 && c <= 7 && r >= 2 && r <= 15) {brickColour = "orange";}
+			else if (c >= 7 && c <= 10 || r >= 7 && r <= 9 && c >= 8 && c <= 12) {brickColour = "green";}
+			else if (c >= 10) {brickColour = "blue"}
+			if(bricks[c][r].status == 1) {
+                var brickX = (r*(brickWidth+brickPadding))+brickOffsetLeft;
+                var brickY = (c*(brickHeight+brickPadding))+brickOffsetTop;
+                bricks[c][r].x = brickX;
+                bricks[c][r].y = brickY;
+                ctx.beginPath();
+                ctx.rect(brickX, brickY, brickWidth, brickHeight);
+                ctx.fillStyle = brickColour;
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+    }
+}
+function drawlevelOne() {
+	document.getElementById("q-ball").innerHTML = "<span style='color: cyan;'>" + fireball + "</span>";
+	document.getElementById("q-lives").innerHTML = "<span style='color: cyan;'>" + life + "</span>";
+	document.getElementById("q-c").innerHTML = "<span style='color: cyan;'>" + closure + "</span>";
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBricks_levelOne() ;display_levelOne(); collisionDetection_levelOne();
+    if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {dx = -dx}
+    if(y + dy < ballRadius) {dy = -dy;}
+    else if(y + dy > canvas.height-ballRadius) {
+        if(x > paddleX && x < paddleX + paddleWidth) {dy = -dy;}
+        else {
+			if (gameOver_1 == false) {
+				deaths++; 
+				if(deaths >= 20) {
+					alert("GAME OVER.            Your score was " + score + ".");
+					clearInterval(drawLevelOne);
+					gameOver_1 = true;
+				}else {
+					x = canvas.width/2;
+					y = canvas.height-30;
+					dx = 3;
+					dy = -3;
+					paddleX = (canvas.width-paddleWidth)/2;
+				}
+			}else {gameOver_1 = true;}
+        }
+    }
+    if(rightPressed && paddleX < canvas.width-paddleWidth) {paddleX += 8;}
+    else if(leftPressed && paddleX > 0) {paddleX -= 8;}
+    x += dx; y += dy;
+}
+////////LEVEL 2////////
+function createBricks_levelTwo() {
+	for (c = 0; c<brickColumn_2; c++) {bricks_2[c] = []; for (r=0; r<brickRow; r++) { bricks_2[c][r] = {x: 0, y: 0, status: 1}; } }
+}
+function drawLevelTwo() {
+
+}
+		</script>
+		</main>
+	</body>
+</html>
