@@ -183,9 +183,6 @@ function drawBricks_levelOne() {
     }
 }
 function drawlevelOne() {
-	document.getElementById("q-ball").innerHTML = "<span style='color: cyan;'>" + fireball + "</span>";
-	document.getElementById("q-lives").innerHTML = "<span style='color: cyan;'>" + life + "</span>";
-	document.getElementById("q-c").innerHTML = "<span style='color: cyan;'>" + closure + "</span>";
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBricks_levelOne() ;display_levelOne(); collisionDetection_levelOne();
     if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {dx = -dx}
