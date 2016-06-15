@@ -1,0 +1,12 @@
+#playAndPauseOne {top: 10%; right: 20%;}
+#canvasLevelOne {z-index: 4; background-image: url("http://media.indiedb.com/images/games/1/16/15596/mountain.jpg");background-size: cover; margin: 4%;}
+#canvasLevelTwo {z-index: 5; background-image: url("https://img-new.cgtrader.com/items/136857/large_cartoon_forest_scene_02_3d_model_max_25338aaf-448e-488c-8c28-2b8bba425e7a.jpg"); background-size: cover; margin: 4%;}
+#fireball:hover, #bounce:hover, #life-add:hover  {background: #AAAAAA;}
+#progress {position: relative;width: 50%;height: 10px; background-color: #DDDDDD; top: 200px; left: 25%;}
+#pro {position: absolute; width: 1%; height: 100%;background-color: green;}
+
+body {background: #DEDEDE url("https://upload.wikimedia.org/wikipedia/commons/d/d7/Carina_Dwarf_Galaxy.jpg") fixed;background-size: cover; font-family: arial;}
+h1 {text-align: center; line-height: 0.5; font-style: italic; font-weight: bold!important; color: #111;}
+main {display: none;}
+
+.title-container {width: 30%; border: 5px ridge #555; top: 0; left: 35%; background-image: url("https://intelite.gt/wp-content/uploads/2015/10/madera.jpg"); position: fixed;}
